@@ -1,0 +1,63 @@
+==16709==ERROR: AddressSanitizer: heap-buffer-overflow on address
+0x6020000000af at pc 0x000000607a23 bp 0x7ffdee2dde50 sp 0x7ffdee2dde48
+WRITE of size 1 at 0x6020000000af thread T0
+    #0 0x607a22 in LZWDecodeCompat
+/home/xiaosatianyu/workspace/git/fuzz/for-cve/libtiff-test/tiff-4.0.9/libtiff/tif_lzw.c:763:11
+    #1 0x594aaa in TIFFReadScanline
+/home/xiaosatianyu/workspace/git/fuzz/for-cve/libtiff-test/tiff-4.0.9/libtiff/tif_read.c:450:7
+    #2 0x538620 in PSDataColorSeparate
+/home/xiaosatianyu/workspace/git/fuzz/for-cve/libtiff-test/tiff-4.0.9/tools/tiff2ps.c:2526:8
+    #3 0x530900 in PSpage
+/home/xiaosatianyu/workspace/git/fuzz/for-cve/libtiff-test/tiff-4.0.9/tools/tiff2ps.c
+    #4 0x52c7a6 in TIFF2PS
+/home/xiaosatianyu/workspace/git/fuzz/for-cve/libtiff-test/tiff-4.0.9/tools/tiff2ps.c
+    #5 0x52ab7e in main
+/home/xiaosatianyu/workspace/git/fuzz/for-cve/libtiff-test/tiff-4.0.9/tools/tiff2ps.c:479:9
+    #6 0x7f7c5cf7ff44 in __libc_start_main
+/build/eglibc-SvCtMH/eglibc-2.19/csu/libc-start.c:287
+    #7 0x41ca0b in _start
+(/home/xiaosatianyu/workspace/git/fuzz/for-cve/libtiff-test/tiff2ps-test/tiff2ps4.0.9+0x41ca0b)
+
+0x6020000000af is located 1 bytes to the left of 8-byte region
+[0x6020000000b0,0x6020000000b8)
+allocated by thread T0 here:
+    #0 0x4f5716 in __interceptor_malloc
+/home/xiaosatianyu/workspace/git/LLVM/llvm/projects/compiler-rt/lib/asan/asan_malloc_linux.cc:88
+    #1 0x5a69d7 in _TIFFmalloc
+/home/xiaosatianyu/workspace/git/fuzz/for-cve/libtiff-test/tiff-4.0.9/libtiff/tif_unix.c:316:10
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow
+/home/xiaosatianyu/workspace/git/fuzz/for-cve/libtiff-test/tiff-4.0.9/libtiff/tif_lzw.c:763:11
+in LZWDecodeCompat
+Shadow bytes around the buggy address:
+  0x0c047fff7fc0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c047fff7fd0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c047fff7fe0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c047fff7ff0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c047fff8000: fa fa 00 00 fa fa fd fa fa fa 00 fa fa fa 00 fa
+=>0x0c047fff8010: fa fa 00 07 fa[fa]00 fa fa fa fa fa fa fa fa fa
+  0x0c047fff8020: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c047fff8030: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c047fff8040: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c047fff8050: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c047fff8060: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==16709==ABORTING
